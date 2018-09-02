@@ -1,10 +1,9 @@
 # This Python file uses the following encoding: utf-8
 
-from dotenv import load_dotenv
-load_dotenv(dotenv_path='./.env', verbose=True)
+import config
 
 import twitter
-import unicodecsv as csv
+import csv
 import re
 import os
 
@@ -22,19 +21,21 @@ def get_type(description):
         type = 'ACT'
     return type
 
-print 'Connecting to Twitter… (pauses to stay under rate limit)'
-api = twitter.Api(consumer_key=os.getenv('consumer_key'),
-                  consumer_secret=os.getenv('consumer_secret'),
-                  access_token_key=os.getenv('access_token_key'),
-                  access_token_secret=os.getenv('access_token_secret'),
+print('Connecting to Twitter… (pauses to stay under rate limit)')
+api = twitter.Api(consumer_key=config.CONSUMER_KEY,
+                  consumer_secret=config.CONSUMER_SECRET,
+                  access_token_key=config.ACCESS_KEY,
+                  access_token_secret=config.ACCESS_TOKEN_SECRET,
                   sleep_on_rate_limit=True)
 
-mps = api.GetListMembers(slug='mps', owner_screen_name='NZParliament')
+# mps = api.GetListMembers(slug='mps', owner_screen_name='NZParliament')
+mps = api.GetListMembers(slug='canadian-mp-twitter-list', owner_screen_name='cjpac')
 
 mps_latest_fave_status_ids = {}
 
+# Loops through file if exists and creates dictionary of each unique user and the most recent tweet's status id
 if os.path.isfile('faves.csv'):
-    print 'Found existing faves.csv'
+    print('Found existing faves.csv')
     previous_user = None
     with open('faves.csv', 'r') as faves_csv:
         for row in csv.reader(faves_csv):
@@ -54,11 +55,11 @@ with open('faves.csv', 'a') as faves_csv:
         since_id = None
         if mp.name in mps_latest_fave_status_ids:
             since_id = mps_latest_fave_status_ids[mp.name]
-            print 'Looking for tweets for', mp.name, 'after', since_id
+            print('Looking for tweets for', mp.name, 'after', since_id)
         favorites = api.GetFavorites(user_id=mp.id, since_id=since_id)
 
         for favorite in favorites:
-            print mp.name, '❤️ ', favorite.user.name, favorite.created_at
+            print(mp.name, '❤️ ', favorite.user.name, favorite.created_at)
             writer.writerow([mp.name, favorite.user.name, favorite.id, favorite.text, mp.screen_name, favorite.user.screen_name])
             faved_screennames.add(favorite.user.screen_name)
 
@@ -74,4 +75,4 @@ with open('people.csv', 'a') as people_csv:
         row = user.name, '', user.description, user.screen_name, user.profile_image_url
         writer.writerow(row)
 
-print "New tweets collected:", len(faved_screennames)
+print("New tweets collected:", len(faved_screennames))
