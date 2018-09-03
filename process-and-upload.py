@@ -11,7 +11,7 @@ from gspread_dataframe import set_with_dataframe
 print('Connecting to Google Sheet…')
 scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/drive']
-credentials = ServiceAccountCredentials.from_json_keyfile_name(config.json_keyfile, scope)
+credentials = ServiceAccountCredentials.from_json_keyfile_dict(config.JSON_KEYFILE, scope)
 gc = gspread.authorize(credentials)
 sheets = gc.open_by_key(config.GOOGLE_SHEET_KEY)
 
@@ -35,7 +35,7 @@ people = pd.merge(people, favees, how='outer', on=['label', 'label'])
 print('Labeling people with less than 2 favees as singletons')
 people.loc[(people['favees'] < 2) & (people['type'].isnull()), ['type']] = 'singleton'
 
-confirm = raw_input('OK to delete & replace worksheets? (Y/n) ')
+confirm = input('OK to delete & replace worksheets? (Y/n) ')
 if confirm is '' or strtobool(confirm):
     print("Deleting")
     try: # currently needs one useless worksheet hanging about (can't delete all sheets)

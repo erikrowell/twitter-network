@@ -1,17 +1,15 @@
 # This Python file uses the following encoding: utf-8
 
-from dotenv import load_dotenv
-load_dotenv(dotenv_path='./.env', verbose=True)
+import config
 
 import twitter
 import pandas
-import os
 
 print 'Connecting to Twitter…'
-api = twitter.Api(consumer_key=os.getenv('consumer_key'),
-                  consumer_secret=os.getenv('consumer_secret'),
-                  access_token_key=os.getenv('access_token_key'),
-                  access_token_secret=os.getenv('access_token_secret'),
+api = twitter.Api(consumer_key=config.CONSUMER_KEY,
+                  consumer_secret=config.CONSUMER_SECRET,
+                  access_token_key=config.ACCESS_KEY,
+                  access_token_secret=config.ACCESS_TOKEN_SECRET,
                   sleep_on_rate_limit=False)
 
 faves = pandas.read_csv('faves.csv')

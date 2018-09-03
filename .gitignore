@@ -4,5 +4,6 @@
 .DS_Store
 config.py
 .ipynb_checkpoints/
+*.ipynb
 *__pycache__*
-testing.ipynb
+.vscode
