@@ -2,7 +2,6 @@
 
 import config
 
-import pandas as pd
 import json
 import twitter
 import csv
@@ -50,12 +49,12 @@ if os.path.isfile('faves.csv'):
 
 faved_screennames = set()
 
-### Used to get a csv of MP twitter handles to manually label by Party
-m = pd.DataFrame.from_dict(mps_latest_fave_status_ids, orient = 'index')
-m.reset_index(inplace = True)
-m.columns = ['name', 'id']
-m.to_csv('mps.csv')
-###
+# ### Used to get a csv of MP twitter handles to manually label by Party
+# m = pd.DataFrame.from_dict(mps_latest_fave_status_ids, orient = 'index')
+# m.reset_index(inplace = True)
+# m.columns = ['name', 'id']
+# m.to_csv('mps.csv')
+# ###
 
 with open('faves.csv', 'a') as faves_csv:
     writer = csv.writer(faves_csv)
@@ -67,15 +66,11 @@ with open('faves.csv', 'a') as faves_csv:
         if mp.name in mps_latest_fave_status_ids:
             since_id = mps_latest_fave_status_ids[mp.name]
             print('Looking for tweets for', mp.name, 'after', since_id)
+        # If an account is private, a hard error is given and script stops. This try block works around that.
         try:
             favorites = api.GetFavorites(user_id=mp.id, since_id=since_id)
-        # If an account is private, a hard error is given and script stops. This try block works around that.
         except Exception:
             pass
-        # Better yet - use logging to capture errors
-        # except Exception as err:
-        #     print(err.message)
-        #     pass
 
         for favorite in favorites:
             print(mp.name, '❤️ ', favorite.user.name, favorite.created_at)
