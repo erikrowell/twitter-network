@@ -32,14 +32,14 @@ people = pd.read_csv('people.csv')
 people.drop_duplicates(subset=['label'], inplace=True)
 people = pd.merge(people, favees, how='outer', on=['label', 'label'])
 
+print('Labelling MP accounts with their Party affiliation')
+party = pd.read_csv('mps.csv')
+people = pd.merge(people, party, how = 'outer', on = ['label', 'label'])
+people['type'] = people['party']
+people.drop('party', axis = 1, inplace = True)
+
 print('Labeling people with less than 2 favees as singletons')
 people.loc[(people['favees'] < 2) & (people['type'].isnull()), ['type']] = 'singleton'
-
-# print('Labelling MP accounts with their Party affiliation')
-# party = pd.read_csv('mps2.csv')
-# people = pd.merge(people, party, how = 'outer', on = ['label', 'label'])
-# people['type'] = people['party']
-# people.drop('party', axis = 1, inplace = True)
 
 confirm = input('OK to clear & update worksheets? (Y/n) ')
 if confirm is '' or strtobool(confirm):

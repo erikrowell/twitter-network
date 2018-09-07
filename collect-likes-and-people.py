@@ -33,7 +33,7 @@ api = twitter.Api(consumer_key=config.CONSUMER_KEY,
 
 # mps = api.GetListMembers(slug='mps', owner_screen_name='NZParliament')
 mps = api.GetListMembers(slug='canadian-mp-twitter-list', owner_screen_name='cjpac')
-
+mps.append(api.GetUser(screen_name='theJagmeetSingh'))
 mps_latest_fave_status_ids = {}
 
 # Loops through file if exists and creates dictionary of each unique user and the most recent tweet's status id

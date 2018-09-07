@@ -1,5 +1,6 @@
 .env
-*.csv
+faves.csv
+people.csv
 *.json
 .DS_Store
 config.py
