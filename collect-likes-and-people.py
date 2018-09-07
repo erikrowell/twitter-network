@@ -2,27 +2,8 @@
 
 import config
 
-import json
 import twitter
 import csv
-import re
-import os
-import logging
-
-# Not enough data in most MP's twitter bios
-# def get_type(description):
-#     type = ''
-#     if re.search(r'\bNDP|ndp|[Nn]ew [Dd]emocrat\b', description, re.IGNORECASE):
-#         type = 'NDP'
-#     elif re.search(r'\bgreen\b', description, re.IGNORECASE):
-#         type = 'Green'
-#     elif re.search(r'\b[Ll]iberal\b', description, re.IGNORECASE):
-#         type = 'Liberal'
-#     elif re.search(r'\b[Bb]loq|BQ\b', description, re.IGNORECASE):
-#         type = 'Bloc'
-#     elif re.search(r'\b[Cc]on*\b', description, re.IGNORECASE):
-#         type = 'Conservative'
-#     return type
 
 print('Connecting to Twitter… (pauses to stay under rate limit)')
 api = twitter.Api(consumer_key=config.CONSUMER_KEY,
@@ -34,6 +15,7 @@ api = twitter.Api(consumer_key=config.CONSUMER_KEY,
 # mps = api.GetListMembers(slug='mps', owner_screen_name='NZParliament')
 mps = api.GetListMembers(slug='canadian-mp-twitter-list', owner_screen_name='cjpac')
 mps.append(api.GetUser(screen_name='theJagmeetSingh'))
+
 mps_latest_fave_status_ids = {}
 
 # Loops through file if exists and creates dictionary of each unique user and the most recent tweet's status id
@@ -48,13 +30,6 @@ if os.path.isfile('faves.csv'):
                 mps_latest_fave_status_ids[current_user] = row[2]
 
 faved_screennames = set()
-
-# ### Used to get a csv of MP twitter handles to manually label by Party
-# m = pd.DataFrame.from_dict(mps_latest_fave_status_ids, orient = 'index')
-# m.reset_index(inplace = True)
-# m.columns = ['name', 'id']
-# m.to_csv('mps.csv')
-# ###
 
 with open('faves.csv', 'a') as faves_csv:
     writer = csv.writer(faves_csv)

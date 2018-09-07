@@ -43,7 +43,7 @@ people.loc[(people['favees'] < 2) & (people['type'].isnull()), ['type']] = 'sing
 
 confirm = input('OK to clear & update worksheets? (Y/n) ')
 if confirm is '' or strtobool(confirm):
-    print("Deleting")
+    print("Clearing worksheets")
     try:
         sheets.worksheet('faves').clear()
         sheets.worksheet('people').clear()
