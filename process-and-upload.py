@@ -41,18 +41,16 @@ people.drop('party', axis = 1, inplace = True)
 print('Labeling people with less than 2 favees as singletons')
 people.loc[(people['favees'] < 2) & (people['type'].isnull()), ['type']] = 'singleton'
 
-confirm = input('OK to clear & update worksheets? (Y/n) ')
-if confirm is '' or strtobool(confirm):
-    print("Clearing worksheets")
-    try:
-        sheets.worksheet('faves').clear()
-        sheets.worksheet('people').clear()
-    except: print("Couldn't clear sheet")
+print("Clearing worksheets")
+try:
+    sheets.worksheet('faves').clear()
+    sheets.worksheet('people').clear()
+except: print("Couldn't clear sheet")
 
-    print('Formatting worksheets')
-    sheets.worksheet('faves').resize(rows = faves_added.shape[0], cols = faves_added.shape[1])
-    sheets.worksheet('people').resize(rows = people.shape[0], cols = people.shape[1])
-    print("Uploading faves")
-    set_with_dataframe(sheets.worksheet('faves'), faves_added)
-    print("Uploading people")
-    set_with_dataframe(sheets.worksheet('people'), people)
+print('Formatting worksheets')
+sheets.worksheet('faves').resize(rows = faves_added.shape[0], cols = faves_added.shape[1])
+sheets.worksheet('people').resize(rows = people.shape[0], cols = people.shape[1])
+print("Uploading faves")
+set_with_dataframe(sheets.worksheet('faves'), faves_added)
+print("Uploading people")
+set_with_dataframe(sheets.worksheet('people'), people)

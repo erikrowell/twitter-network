@@ -4,6 +4,10 @@ import config
 
 import twitter
 import csv
+import os
+import datetime
+
+start = datetime.datetime.now()
 
 print('Connecting to Twitter… (pauses to stay under rate limit)')
 api = twitter.Api(consumer_key=config.CONSUMER_KEY,
@@ -65,3 +69,6 @@ with open('people.csv', 'a') as people_csv:
         writer.writerow(row)
 
 print("New tweets collected:", len(faved_screennames))
+end = datetime.datetime.now()
+total_time = end - start
+print(total_time)

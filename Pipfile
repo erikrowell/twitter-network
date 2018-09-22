@@ -1,25 +1,16 @@
 [[source]]
-
 url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
-unicodecsv = "*"
-python-twitter = "*"
 "oauth2client" = "*"
 pandas = "*"
 gspread = "*"
 gspread-dataframe = "*"
-"5f22a8e" = {path = "./Pipfile"}
-
+python-twitter = "*"
 
 [dev-packages]
 
-
-
 [requires]
-
-python_version = "3.7"
+python_version = "3.6"
